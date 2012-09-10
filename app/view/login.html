@@ -1,0 +1,25 @@
+{% from "bootstrap/macros.html" import alert,small_link %}
+{% from "bootstrap/forms/macros.html" import field, input  %}
+{% extends "layout.html" %}
+{% block content %}
+<div class="container" style="margin:50px 0 0 0;">
+    <div class="row">
+       &nbsp;
+    </div>
+    <div class="row">
+        <div class="span3">&nbsp;</div>
+        <div class="span6">
+            {% if arg.user%}
+                <h3>Account status</h3>
+                <p>You are logged in as {{arg.user}}</p>
+                {{small_link("logout now.",href="/logout")}}.
+            {% else %}
+                <h3>Login</h3>
+                <p>Compile the form below with your account data and click on login.</p>
+                {{arg.login_form.to_form()}}
+            {% endif %}
+        </div>
+        <div class="span3">&nbsp;</div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,88 @@
+{% from "bootstrap/macros.html" import alert,small_link,small_button  %}
+{% from "bootstrap/forms/macros.html" import field, input  %}
+{% block content %}
+{{
+arg.data.to_form()
+}}
+
+
+<script type="text/javascript">
+    function remove_role(href) {
+        $.ajax({
+            url:href,
+            type:'GET',
+            dataType:'text',
+            timeout:1000,
+            error:function (xhr, ajaxOptions, thrownError) {
+                $("#info-box").removeClass();
+                $("#info-box").addClass("alert alert-error");
+                $("#info-icon").attr("src", "/img/error.png");
+                $("#info-title").html("Error");
+                $("#info-text").html("error " + xhr.status + ":" + thrownError);
+            },
+            success:function (text) {
+
+                $("#body").html(text);
+
+            }
+        });
+    }
+    function add_role() {
+        submit_form("add-role-form");
+    }
+
+</script>
+
+
+<h4>Roles:</h4>
+<div>
+         <style>
+             .label-field{
+                 font-size:11.844px;
+                 font-weight: bold;
+                 line-height: 14px;
+                 height: 18px;
+                 color: #ffffff;
+                 vertical-align: baseline;
+                 white-space: nowrap;
+                 text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+
+                 margin-top: 8px;
+                 padding: 0px 0px 2px 0px;
+                 border-style: none;
+                 background-color: #3a87ad;
+             }
+         </style>
+        <form id="add-role-form" name="add-role-form" action="/edit/parroit/addrole" method="POST" style="display:inline;">
+            <span class="badge badge-info">
+
+                <select id="rolename" name="rolename" class="label-field" style="width:auto;">
+
+                    {% for it in arg.ctrl.add_role_form["rolename"].attrs["items"] %}
+                        <option selected="selected" value="{{it[0]}}">{{it[1]}}</option>
+                    {% endfor %}
+                </select>
+                <a href="javascript:add_role();">
+                    <i class="icon-plus-sign icon-white"></i>
+                </a>
+            </span>
+        </form>
+
+
+
+    {% if arg.data.source.roles %}
+
+    {% for role in arg.data.source.roles %}
+    &nbsp;
+    <span class="badge badge-info">
+        {{role.role.role_name}}
+        <a href="javascript:remove_role('/edit/{{arg.username}}/removerole/{{role.role.role_name}}');">
+            <i class="icon-remove icon-white"></i>
+        </a>
+     </span>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+{% endblock content %}

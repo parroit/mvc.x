@@ -1,0 +1,95 @@
+{% from "bootstrap/macros.html" import alert,small_link %}
+{% from "bootstrap/modal.html" import modal,show_modal,show_modal_js %}
+{% extends "layout.html" %}
+{% block content %}
+
+
+<div class="row">
+    <div class="span12 well" style="margin-top:50px;">
+        <h2>{{arg.total_rows}} users found</h2>
+    </div>
+
+</div>
+<div class="row">&nbsp;</div>
+<div class="row">
+    <style>
+        .leftmenu {
+            float: right;
+            margin-top: 2px;
+            margin-right: -6px;
+            opacity: 0.25;
+        }
+    </style>
+
+    <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-tabs nav-stacked">
+            <li><a href="/index/1">Search users <i class="icon-chevron-right leftmenu"></i></a></li>
+            <li><a href="/profile">Profile <i class="icon-chevron-right leftmenu"></i></a></li>
+            <li><a href="/roles/list/1">Role <i class="icon-chevron-right leftmenu"></i></a></li>
+
+        </ul>
+    </div>
+    <div class="span9">
+        <div class="row">
+
+            <div class="span12">
+
+                <div class="btn-group" style="margin: 9px 0;">
+                    {{show_modal(caption="New user",id="edit-modal",href="/new",type="default") }}
+                    {{ small_link(content="Delete users",type="default") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="span12 table table-striped table-bordered table-condensed">
+                <thead>
+
+                <tr>
+                    <th>User Name</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <td>&nbsp;</td>
+                </tr>
+
+                </thead>
+                <tbody>
+
+                {% for user in arg.rows %}
+                <tr>
+
+                    <td class="span2">{{user.username}}</td>
+                    <td class="span4">{{user.fullname}}</td>
+                    <td class="span4">{{user.email}}</td>
+                    <td class="span2">
+                        {{show_modal(caption="Edit",id="edit-modal",href="/edit/"+user.username,type="info") }}
+                    </td>
+                </tr>
+                {%endfor%}
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" style="margin-bottom: 140px;">
+            <div class="span12">
+                <div class="pager">
+                    <ul>
+                        <li class="{{'disabled' if arg.current_page==1}}">
+                            <a href="/index/{{arg.current_page-1}}">&lt;</a></li>
+                        {% for page in range(1,arg.total_pages) %}
+                        <li class="{{'active' if arg.current_page==page }}">
+                            <a href="/index/{{page}}">{{page}}</a></li>
+                        {%endfor%}
+
+                        <li class="{{'disabled' if arg.current_page==arg.total_pages}}">
+                            <a href="/index/{{arg.current_page+1}}">&gt;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ modal("Edit user","edit-modal",True) }}
+
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% from "bootstrap/macros.html" import small_link,large_link,alert %}
+
+{% macro modal(header, id, close_button=True) -%}
+<div class="modal hide fade" id="{{id}}" role="dialog" aria-labelledby="header_label" aria-hidden="true">
+    <div class="modal-header">
+        {% if(close_button) -%}
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        {%- endif %}
+        <h3 id="header_label">{{header}}</h3>
+    </div>
+    <div class="modal-body" id="body">
+    This is an empty body
+</div>
+
+    <div class="modal-footer">
+
+
+
+        {% if(close_button) -%}
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        {%- endif %}
+
+
+        <button class="btn btn-success" onclick="submit();">
+            <i class="icon-ok-circle icon-white"> </i> Save
+        </button>
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro show_modal(caption, id,type="info",href="#") -%}
+    {{ small_link(caption,"javascript:show('%s','%s')" %(href,id),type) }}
+{%- endmacro %}
+
+{% macro show_modal_large(caption, id,type="info",href="#") -%}
+    {{ large_link(caption,"javascript://show('%s','%s')" %(href,id),type) }}
+{%- endmacro %}

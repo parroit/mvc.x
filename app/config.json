@@ -1,0 +1,124 @@
+{
+    "persistor":{
+        "address":"alchemy-persistor",
+        "protocol":"sqlite",
+        "host":"",
+        "db_name":"/app/db/ecm.db",
+        "username":"",
+        "password":"",
+        "model-path":"app/model"
+    },
+
+
+    "auth":{
+        "address":"mvcx.authmgr",
+        "user_collection":"User",
+        "persistor_address":"alchemy-persistor",
+        "session_timeout":900000
+    },
+
+
+    "web":{
+        "session-dir":"app/sessions",
+        "port": 8080,
+        "host": "localhost",
+        "ssl": true,
+
+        "bridge": true,
+
+        "inbound_permitted": [
+            {
+                "address": "vertx.basicauthmanager.login"
+            },
+
+            {
+                "address": "alchemy-persistor"
+            }
+
+        ],
+
+        "sjs_config": {
+            "prefix":"/eventbus"
+        },
+
+        "outbound_permitted": [{}],
+
+
+
+        "router":{
+            "controller-path" : "app.controller",
+            "routes" : [
+                {
+                    "get" : "/index/:page",
+                    "controller" : "Users.list(:page)",
+                    "view" : "index.html"
+                },
+                {
+                    "get" : "/edit/:name",
+                    "controller" : "Users.edit(:name)",
+                    "view" : "edit.html"
+                },
+                {
+                    "post" : "/edit/:name",
+                    "controller" : "Users.save(:name)",
+                    "view" : "edit.html"
+                },
+                {
+                    "get" : "/edit/:name/removerole/:role",
+                    "controller" : "Users.removerole(:name,:role)",
+                    "view" : "edit.html"
+                },
+                {
+                    "get" : "/edit/:name/addrole",
+                    "controller" : "Users.addrole(:name)",
+                    "view" : "edit.html"
+                },
+                {
+                    "get" : "/roles/list/:page",
+                    "controller" : "Roles.list(:page)",
+                    "view" : "index-role.html"
+                },
+                {
+                    "get" : "/roles/edit/:name",
+                    "controller" : "Roles.edit(:name)",
+                    "view" : "edit-role.html"
+                },
+                {
+                    "post" : "/roles/edit/:name",
+                    "controller" : "Roles.save(:name)",
+                    "view" : "edit-role.html"
+                },
+                {
+                    "get" : "/roles/new",
+                    "controller" : "Roles.create()",
+                    "view" : "edit-role.html"
+                },
+                {
+                    "get" : "/login",
+                    "controller" : "Users.login_page()",
+                    "view" : "login.html"
+                },
+                {
+                    "post" : "/login",
+                    "controller" : "Users.do_login()",
+                    "view" : "login.html"
+                },
+                {
+                    "static" : "/css/:path",
+                    "folder" : "mvc_x/static/css"
+
+                },
+                {
+                    "static" : "/js/:path",
+                    "folder" : "mvc_x/static/js"
+
+                },
+                {
+                    "static" : "/img/:path",
+                    "folder" : "mvc_x/static/img"
+
+                }
+            ]
+        }
+    }
+}
