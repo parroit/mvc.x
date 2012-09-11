@@ -13,6 +13,8 @@ __author__ = 'parroit'
 class Bindable():
     def clone(self):
         return Bindable(self.name,validators=self.validators,action=self.action  ,*self.fields)
+    
+    #should be moved to renderer
     def get_widget(self,x):
         if x.type=="text" or x.type=="number" or x.type=="datetime":
             return form.Textbox(x.name,id=x.name,description=x.description,value=x.get_value(),valid=x.is_valid(),note=x.note,**x.attrs)
@@ -25,7 +27,8 @@ class Bindable():
         elif x.type=="select":
             print(x.attrs)
             return form.Dropdown(x.name,x.attrs["items"],id=x.name,description=x.description,value=x.get_value(),valid=x.is_valid(),note=x.note,**x.attrs)
-
+    
+    #should be moved to renderer
     def to_json(self):
         obj=JsonObject()
         #print("to_json")
@@ -34,7 +37,8 @@ class Bindable():
             obj.putString(x.name,str(x.get_value()))
             #print("to_json end ")
         return obj
-
+    
+    #should be moved to renderer
     def to_form(self,form_action=None):
 
         inputs=[self.get_widget(x) for x in self.fields ]
